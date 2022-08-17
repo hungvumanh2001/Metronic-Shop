@@ -11,5 +11,5 @@ public interface ProductService {
     void save(Product product);
     Page<Product> findAllByCategoryId(Pageable pageable,Long id);
     Iterable<Product> findAllByPriceBetween(float from,float to);
-    Iterable<Product> findAllBySaleBetween(float from,float to);
+    Iterable<Product> findAllBySale(float sale);
 }

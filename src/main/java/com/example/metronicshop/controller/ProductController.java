@@ -47,12 +47,12 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
     //bet sale tất cả những sản phẩm đc sale thì cho vào best sale
-    @GetMapping("/sale-between")
-    public ResponseEntity<Iterable<Product>>findAllBySaleBetween(@RequestParam float from,@RequestParam float to)
+    @GetMapping("/sale")
+    public ResponseEntity<Iterable<Product>>findAllBySale(@RequestParam float sale)
     {
-        Iterable<Product> products=productService.findAllBySaleBetween(from,to);
+        Iterable<Product> products=productService.findAllBySale(sale);
         if(products==null)
-            return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }
