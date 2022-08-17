@@ -60,7 +60,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
             crossorigin="anonymous"></script>
-    <script src="../../Jquery/prettify.js"></script>
+<!--    <script src="../../Jquery/prettify.js"></script>-->
 </head>
 <!-- Head END -->
 
@@ -832,7 +832,7 @@
 
 <!--Ajax-->
 <script>
-    let content = document.getElementById('content').innerHTML;
+    loadData(0);
     function loadData(page) {
         let pre = page - 1 > 0 ? page - 1 : 0;
         let next = page + 1;
@@ -842,18 +842,18 @@
             url: 'http://localhost:8080/products?page=' + page,
             success: function (list) {
                 console.log(list);
-                for (let i=0;i<list.length;i++){
+                for (let i=0;i<list.content.length;i++){
                     tmp += `<div>
                         <div class="product-item">
-                            <div class="pi-img-wrapper">twitter-timeline
-                                <img src="${list[i].imageFirst}" class="img-responsive" alt="Berry Lace Dress">
+                            <div class="pi-img-wrapper">
+                                <img src="${list.content[i].imageRoot}" class="img-responsive" alt="Berry Lace Dress" >
                                 <div>
-                                    <a href="${list[i].imageFirst}" class="btn btn-default fancybox-button">Zoom</a>
+                                    <a href="${list.content[i].imageRoot}" class="btn btn-default fancybox-button">Zoom</a>
                                     <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                                 </div>
                             </div>
-                            <h3><a href="shop-item.html">${list[i].title}</a></h3>
-                            <div class="pi-price">$${list[i].price}</div>
+                            <h3><a href="shop-item.html">${list.content[i].title}</a></h3>
+                            <div class="pi-price">$${list.content[i].price}</div>
                             <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
                             <div class="sticker sticker-new"></div>
                         </div>
@@ -869,7 +869,7 @@
                         \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadData(${next})">Next</a></li>
                         \t\t\t\t\t\t</ul>
                         \t\t\t\t\t</nav>`
-                content = str;
+                document.getElementById('content').innerHTML = tmp;
             }
         });
         }

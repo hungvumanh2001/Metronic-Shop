@@ -23,9 +23,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping
-    public ResponseEntity<Iterable<Product>> findAll()
+    public ResponseEntity<Iterable<Product>> findAll(@PageableDefault(size =3) Pageable page)
     {
-        Iterable<Product> products=productService.findAll();
+        Iterable<Product> products=productService.findAll(page);
         if(products==null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(products, HttpStatus.OK);

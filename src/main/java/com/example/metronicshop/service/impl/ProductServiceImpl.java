@@ -16,8 +16,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository repository;
     //phân trang sản phẩm
     @Override
-    public Iterable<Product> findAll() {
-        return repository.findAll();
+    public Page<Product> findAll(Pageable page) {
+        return repository.findAll(page);
     }
 
     @Override
