@@ -13,5 +13,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAll(Pageable pageable);
     Page<Product> findAllByCategoryId(Pageable pageable,Long id);
     Iterable<Product>findAllByPriceBetween(float from,float to);
-    Iterable<Product> findAllBySale(float sale);
+    Page<Product> findAllBySaleBetween(Pageable pageable, float from,float to);
 }

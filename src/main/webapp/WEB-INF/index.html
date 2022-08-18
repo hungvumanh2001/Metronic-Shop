@@ -359,13 +359,18 @@
             <!-- BEGIN CONTENT -->
             <div class="col-md-9 col-sm-8">
                 <h2>Three items</h2>
-                <!--                <div class="owl-carousel owl-carousel3 owl-theme owl-loaded">-->
-                <div class="owl-stage-outer">
-                    <div class="owl-stage" id="content">
+                <div class="row">
+                    <div class="owl-carousel owl-carousel3 owl-theme owl-loaded" id="content">
+                        <!--                <div class="owl-stage-outer">-->
+                        <!--                    <div class="owl-stage" id="content">-->
 
+                        <!--                    </div>-->
+                        <!--                </div>-->
                     </div>
                 </div>
-                <!--                </div>-->
+                <div class="row mt-3" id="contentPage">
+
+                </div>
             </div>
             <!-- END CONTENT -->
         </div>
@@ -660,7 +665,7 @@
 <script>
     loadData(0);
     loadCategory();
-    loadSaleData(0);
+    loadSaleData(0, 0.01, 0.99);
 
     function loadData(page) {
         let pre = page - 1 > 0 ? page - 1 : 0;
@@ -676,7 +681,7 @@
                         tmp += `<div class="owl-item active">
                                     <div class="product-item">
                                         <div class="pi-img-wrapper">
-                                            <img style="width: 248.633px; height: 227.933px" src="${list.content[i].imageRoot}" class="img-responsive"
+                                            <img style="width: 220.633px; height: 237.933px" src="${list.content[i].imageRoot}" class="img-responsive"
                                                  alt="Berry Lace Dress">
                                             <div>
                                                 <a href="${list.content[i].imageRoot}"
@@ -697,7 +702,7 @@
                                 <div>
                                     <div class="product-item">
                                         <div class="pi-img-wrapper">
-                                            <img style="width: 248.633px; height: 227.933px" src="${list.content[i].imageRoot}" class="img-responsive" alt="Berry Lace Dress" >
+                                            <img style="width: 220.633px; height: 237.933px" src="${list.content[i].imageRoot}" class="img-responsive" alt="Berry Lace Dress" >
                                             <div>
                                                 <a href="${list.content[i].imageRoot}" class="btn btn-default fancybox-button">Zoom</a>
                                                 <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
@@ -713,7 +718,7 @@
                     }
                 }
                 //Phân trang
-                tmp += `<nav aria-label="Page navigation example" style="margin: 0 auto">
+                tmpPage = `<nav aria-label="Page navigation example" style="margin: 0 auto">
                         \t\t\t\t\t\t<ul class="pagination">
                         \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadData(${pre})">Previous</a></li>
                         \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadData(0)">1</a></li>
@@ -723,6 +728,7 @@
                         \t\t\t\t\t\t</ul>
                         \t\t\t\t\t</nav>`
                 document.getElementById('content').innerHTML = tmp;
+                document.getElementById('contentPage').innerHTML = tmpPage;
             }
         });
     }
@@ -775,18 +781,17 @@
         document.getElementById('sidebarCategory').innerHTML = str;
     }
 
-    function loadSaleData(page) {
+    function loadSaleData(page, from, to) {
         let pre = page - 1 > 0 ? page - 1 : 0;
         let next = page + 1;
         let tmp = ``;
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/products?page=' + page,
+            url: 'http://localhost:8080/products/sale-between?page=' + page + '&from=' + from + '&to=' + to,
             success: function (list) {
                 for (let i = 0; i < list.content.length; i++) {
-                    if (list.content[i].sale != 0) {
-                        let salePrice = list.content[i].price * (1 - list.content[i].sale);
-                        tmp += `<div class="owl-item active">
+                    let salePrice = list.content[i].price * (1 - list.content[i].sale);
+                    tmp += `<div class="owl-item active">
                                     <div class="product-item">
                                         <div class="pi-img-wrapper">
                                             <img style="width: 200px; height: 258.663px" src="${list.content[i].imageRoot}" class="img-responsive"
@@ -805,16 +810,15 @@
                                     </div>
                                 </div>
                             </div>`
-                    }
                 }
                 //Phân trang
                 tmp += `<nav aria-label="Page navigation example" style="margin: 0 auto">
                         \t\t\t\t\t\t<ul class="pagination">
-                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(${pre})">Previous</a></li>
-                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(0)">1</a></li>
-                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(1)">2</a></li>
-                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(2)">3</a></li>
-                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(${next})">Next</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(${pre}, 0.01, 0.99)">Previous</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(0, 0.01, 0.99)">1</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(1, 0.01, 0.99)">2</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(2, 0.01, 0.99)">3</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="loadSaleData(${next}, 0.01, 0.99)">Next</a></li>
                         \t\t\t\t\t\t</ul>
                         \t\t\t\t\t</nav>`
                 document.getElementById('saleProduct').innerHTML = tmp;
