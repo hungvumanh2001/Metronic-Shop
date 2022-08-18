@@ -32,8 +32,8 @@ public class ProductController {
     }
 
     @GetMapping("/search-by-cateId")
-    public ResponseEntity<Iterable<Product>> findAllByCateId(@PageableDefault(size =12)Pageable pageable,@RequestParam Long id) {
-        Iterable<Product> products=productService.findAllByCategoryId(pageable,id);
+    public ResponseEntity<Iterable<Product>> findAllByCateId(@PageableDefault(size =3)Pageable page,@RequestParam Long id) {
+        Iterable<Product> products=productService.findAllByCategoryId(page,id);
         if(products==null)
             return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(products, HttpStatus.OK);

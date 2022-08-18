@@ -361,11 +361,7 @@
                 <h2>Three items</h2>
                 <div class="row">
                     <div class="owl-carousel owl-carousel3 owl-theme owl-loaded" id="content">
-                        <!--                <div class="owl-stage-outer">-->
-                        <!--                    <div class="owl-stage" id="content">-->
 
-                        <!--                    </div>-->
-                        <!--                </div>-->
                     </div>
                 </div>
                 <div class="row mt-3" id="contentPage">
@@ -747,7 +743,7 @@
     function loadNavCategory(list) {
         let str = '';
         for (let i = 0; i < list.length; i++) {
-            str += `<li><a href="shop-item.html">${list[i].name}</a></li>`;
+            str += `<li><a onclick="findProductByCategoryId(0, ${list[i].id})">${list[i].name}</a></li>`;
         }
         str += `<li>
                     <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes&amp;utm_source=download&amp;utm_medium=banner&amp;utm_campaign=metronic_frontend_freebie"
@@ -775,10 +771,75 @@
     function loadSidebarCategory(list) {
         let str = '';
         for (let i = 0; i < list.length; i++) {
-            str += `<li class="list-group-item clearfix"><a href="shop-product-list.html"><i
+            str += `<li class="list-group-item clearfix"><a onclick="findProductByCategoryId(0, ${list[i].id})"><i
                             class="fa fa-angle-right"></i> ${list[i].name}</a></li>`
         }
         document.getElementById('sidebarCategory').innerHTML = str;
+    }
+    function findProductByCategoryId(page, id) {
+        let pre = page - 1 > 0 ? page - 1 : 0;
+        let next = page + 1;
+        let tmp = ``;
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/products/search-by-cateId?page=' + page + '&id=' + id,
+            success: function (list) {
+                for (let i = 0; i < list.content.length; i++) {
+                    if (list.content[i].sale != 0) {
+                        let salePrice = list.content[i].price * (1 - list.content[i].sale);
+                        tmp += `<div class="owl-item active">
+                                    <div class="product-item">
+                                        <div class="pi-img-wrapper">
+                                            <img style="width: 220.633px; height: 237.933px" src="${list.content[i].imageRoot}" class="img-responsive"
+                                                 alt="Berry Lace Dress">
+                                            <div>
+                                                <a href="${list.content[i].imageRoot}"
+                                                   class="btn btn-default fancybox-button">Zoom</a>
+                                                <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
+                                            </div>
+                                        </div>
+                                        <h3><a href="shop-item.html">${list.content[i].title}</a></h3>
+                                        <div class="pi-price mr-3" style="text-decoration-line:line-through; color: #3c3c3c">$${list.content[i].price}</div>
+                                        <div class="pi-price">$${salePrice}</div>
+                                        <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                        <div class="sticker sticker-sale"></div>
+                                    </div>
+                                </div>
+                            </div>`
+                    } else {
+                        tmp += `<div class="owl-item active">
+                                <div>
+                                    <div class="product-item">
+                                        <div class="pi-img-wrapper">
+                                            <img style="width: 220.633px; height: 237.933px" src="${list.content[i].imageRoot}" class="img-responsive" alt="Berry Lace Dress" >
+                                            <div>
+                                                <a href="${list.content[i].imageRoot}" class="btn btn-default fancybox-button">Zoom</a>
+                                                <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
+                                            </div>
+                                        </div>
+                                        <h3><a href="shop-item.html">${list.content[i].title}</a></h3>
+                                        <div class="pi-price">$${list.content[i].price}</div>
+                                        <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                        <div class="sticker sticker-new"></div>
+                                    </div>
+                                </div>
+                            </div>`
+                    }
+                }
+                //Phân trang
+                tmpPage = `<nav aria-label="Page navigation example" style="margin: 0 auto">
+                        \t\t\t\t\t\t<ul class="pagination">
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="findProductByCategoryId(${pre})">Previous</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="findProductByCategoryId(0)">1</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="findProductByCategoryId(1)">2</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="findProductByCategoryId(2)">3</a></li>
+                        \t\t\t\t\t\t\t<li class="page-item"><a class="page-link" href="#" onclick="findProductByCategoryId(${next})">Next</a></li>
+                        \t\t\t\t\t\t</ul>
+                        \t\t\t\t\t</nav>`
+                document.getElementById('content').innerHTML = tmp;
+                document.getElementById('contentPage').innerHTML = tmpPage;
+            }
+        });
     }
 
     function loadSaleData(page, from, to) {
