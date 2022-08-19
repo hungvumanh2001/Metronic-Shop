@@ -65,6 +65,22 @@
             integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
             crossorigin="anonymous"></script>
     <!--    <script src="../../Jquery/prettify.js"></script>-->
+
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!--Login CSS style-->
+    <link rel="stylesheet" type="text/css" href="css/login-styles.css">
+    <!-- Register CSS style -->
+    <link rel="stylesheet" type="text/css" href="css/register-styles.css">
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
 </head>
 <!-- Head END -->
 
@@ -120,11 +136,11 @@
             <!-- END TOP BAR LEFT PART -->
             <!-- BEGIN TOP BAR MENU -->
             <div class="col-md-6 col-sm-6 additional-nav">
-                <ul class="list-unstyled list-inline pull-right">
-                    <li><a href="shop-account.html">My Account</a></li>
-                    <li><a href="shop-wishlist.html">My Wishlist</a></li>
-                    <li><a href="shop-checkout.html">Checkout</a></li>
-                    <li><a href="page-login.html">Log In</a></li>
+                <ul class="list-unstyled list-inline pull-right" id="topbarUser">
+                    <!--                    <li><a href="shop-account.html">My Account</a></li>-->
+                    <!--                    <li><a href="shop-wishlist.html">My Wishlist</a></li>-->
+                    <li><a onclick="showRegisterForm()">Register</a></li>
+                    <li><a onclick="showLoginForm()">Log In</a></li>
                 </ul>
             </div>
             <!-- END TOP BAR MENU -->
@@ -332,7 +348,7 @@
 </div>
 <!-- END SLIDER -->
 
-<div class="main">
+<div class="main" id="main">
     <div class="container">
         <!-- BEGIN SALE PRODUCT -->
         <div class="row margin-bottom-40">
@@ -659,9 +675,12 @@
 
 <!--Ajax-->
 <script>
+    // load UI
     loadData(0);
     loadCategory();
     loadSaleData(0, 0.01, 0.99);
+
+    loadTopBarUser();
 
     function loadData(page) {
         let pre = page - 1 > 0 ? page - 1 : 0;
@@ -776,6 +795,7 @@
         }
         document.getElementById('sidebarCategory').innerHTML = str;
     }
+
     function findProductByCategoryId(page, id) {
         let pre = page - 1 > 0 ? page - 1 : 0;
         let next = page + 1;
@@ -885,6 +905,268 @@
                 document.getElementById('saleProduct').innerHTML = tmp;
             }
         });
+    }
+
+    function home() {
+        let str = `<div className="container">
+            <!-- BEGIN SALE PRODUCT -->
+            <div className="row margin-bottom-40">
+                <!-- BEGIN SALE PRODUCT -->
+                <div className="col-md-12 sale-product">
+                    <h2>SALE PRODUCT</h2>
+                    <div className="owl-carousel owl-carousel5" id="saleProduct">
+
+                    </div>
+                </div>
+                <!-- END SALE PRODUCT -->
+            </div>
+            <!-- END SALE PRODUCT -->
+
+            <!-- BEGIN SIDEBAR & CONTENT -->
+            <div className="row margin-bottom-40 ">
+                <!-- BEGIN SIDEBAR -->
+                <div className="sidebar col-md-3 col-sm-4">
+                    <ul className="list-group margin-bottom-25 sidebar-menu" id="sidebarCategory">
+
+                    </ul>
+                </div>
+                <!-- END SIDEBAR -->
+                <!-- BEGIN CONTENT -->
+                <div className="col-md-9 col-sm-8">
+                    <h2>Three items</h2>
+                    <div className="row">
+                        <div className="owl-carousel owl-carousel3 owl-theme owl-loaded" id="content">
+
+                        </div>
+                    </div>
+                    <div className="row mt-3" id="contentPage">
+
+                    </div>
+                </div>
+                <!-- END CONTENT -->
+            </div>
+            <!-- END SIDEBAR & CONTENT -->
+
+            <!-- BEGIN PROMO -->
+            <div className="row margin-bottom-35 ">
+                <!-- BEGIN PROMO -->
+                <div className="col-md-6 shop-index-carousel">
+                    <div className="content-slider">
+                        <div id="myCarousel" className="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol className="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" className="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                <li data-target="#myCarousel" data-slide-to="2"></li>
+                            </ol>
+                            <div className="carousel-inner">
+                                <div className="item active">
+                                    <img src="assets/pages/img/index-sliders/slide1.jpg" className="img-responsive"
+                                         alt="Berry Lace Dress">
+                                </div>
+                                <div className="item">
+                                    <img src="assets/pages/img/index-sliders/slide2.jpg" className="img-responsive"
+                                         alt="Berry Lace Dress">
+                                </div>
+                                <div className="item">
+                                    <img src="assets/pages/img/index-sliders/slide3.jpg" className="img-responsive"
+                                         alt="Berry Lace Dress">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PROMO -->
+            </div>
+            <!-- END PROMO -->
+        </div>`
+        document.getElementById('main').innerHTML = str;
+    }
+
+    function showLoginForm() {
+        let str = `<div class="container">
+                    \t<div class="d-flex justify-content-center h-100">
+                    \t\t<div class="card">
+                    \t\t\t<div class="card-header">
+                    \t\t\t\t<h3>Sign In</h3>
+                    \t\t\t\t<div class="d-flex justify-content-end social_icon">
+                    \t\t\t\t\t<span><i class="fab fa-facebook-square"></i></span>
+                    \t\t\t\t\t<span><i class="fab fa-google-plus-square"></i></span>
+                    \t\t\t\t\t<span><i class="fab fa-twitter-square"></i></span>
+                    \t\t\t\t</div>
+                    \t\t\t</div>
+                    \t\t\t<div class="card-body">
+                    \t\t\t\t<form method="post">
+                    \t\t\t\t\t<div class="input-group form-group">
+                    \t\t\t\t\t\t<div class="input-group-prepend">
+                    \t\t\t\t\t\t\t<span class="input-group-text"><i class="fas fa-user"></i></span>
+                    \t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t<input type="text" class="form-control" placeholder="username" id="username">
+                    \t\t\t\t\t\t
+                    \t\t\t\t\t</div>
+                    \t\t\t\t\t<div class="input-group form-group">
+                    \t\t\t\t\t\t<div class="input-group-prepend">
+                    \t\t\t\t\t\t\t<span class="input-group-text"><i class="fas fa-key"></i></span>
+                    \t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t<input type="password" class="form-control" placeholder="password" id="password">
+                    \t\t\t\t\t</div>
+                    \t\t\t\t\t<div class="row align-items-center remember">
+                    \t\t\t\t\t\t<input type="checkbox">Remember Me
+                    \t\t\t\t\t</div>
+                    \t\t\t\t\t<div class="form-group">
+                    \t\t\t\t\t\t<input type="submit" value="Login" class="btn float-right login_btn" onclick="checkLogin()">
+                    \t\t\t\t\t</div>
+                    \t\t\t\t</form>
+                    \t\t\t</div>
+                    \t\t\t<div class="card-footer">
+                    \t\t\t\t<div class="d-flex justify-content-center links">
+                    \t\t\t\t\tDon't have an account?<a href="#">Sign Up</a>
+                    \t\t\t\t</div>
+                    \t\t\t\t<div class="d-flex justify-content-center">
+                    \t\t\t\t\t<a href="#">Forgot your password?</a>
+                    \t\t\t\t</div>
+                    \t\t\t</div>
+                    \t\t</div>
+                    \t</div>
+                    </div>`
+        document.body.innerHTML = str;
+    }
+
+    function checkLogin() {
+        let user = document.getElementById('username').value;
+        let pass = document.getElementById('password').value;
+        // console.log(pass);
+        let obj = {
+            username: user,
+            password: pass
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            type: 'POST',
+            url: 'http://localhost:8080/login',
+            data: JSON.stringify(obj),
+            success: function (data) {
+                // console.log(data);
+                localStorage.setItem("TOKEN", data.accessToken);
+                localStorage.setItem("USER", JSON.stringify(data));
+                localStorage.setItem("USERNAME", data.username);
+                home();
+                loadData(0);
+                loadCategory();
+                loadSaleData(0, 0.01, 0.99);
+            },
+        });
+    }
+
+    function showRegisterForm() {
+        let str = `<div class="container">
+                    \t\t\t<div class="row main">
+                    \t\t\t\t<div class="main-login main-center">
+                    \t\t\t\t<div class="panel-heading">
+                    \t               <div class="panel-title text-center">
+                    \t               \t\t<h1 class="title">Register</h1>
+                    \t               \t\t<hr />
+                    \t               \t</div>
+                    \t            </div>
+                    \t\t\t\t\t<form class="form-horizontal" method="post" action="#">
+                    \t\t\t\t\t\t
+
+                    \t\t\t\t\t\t<div class="form-group">
+                    \t\t\t\t\t\t\t<label for="username" class="cols-sm-2 control-label">Username</label>
+                    \t\t\t\t\t\t\t<div class="cols-sm-10">
+                    \t\t\t\t\t\t\t\t<div class="input-group">
+                    \t\t\t\t\t\t\t\t\t<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                    \t\t\t\t\t\t\t\t\t<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+                    \t\t\t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t</div>
+
+                    \t\t\t\t\t\t<div class="form-group">
+                    \t\t\t\t\t\t\t<label for="password" class="cols-sm-2 control-label">Password</label>
+                    \t\t\t\t\t\t\t<div class="cols-sm-10">
+                    \t\t\t\t\t\t\t\t<div class="input-group">
+                    \t\t\t\t\t\t\t\t\t<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                    \t\t\t\t\t\t\t\t\t<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                    \t\t\t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t</div>
+
+                    \t\t\t\t\t\t<div class="form-group">
+                    \t\t\t\t\t\t\t<label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+                    \t\t\t\t\t\t\t<div class="cols-sm-10">
+                    \t\t\t\t\t\t\t\t<div class="input-group">
+                    \t\t\t\t\t\t\t\t\t<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                    \t\t\t\t\t\t\t\t\t<input type="password" class="form-control" name="confirmPassword" id="confirmPassword"  placeholder="Confirm your Password"/>
+                    \t\t\t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t\t</div>
+                    \t\t\t\t\t\t</div>
+
+                    \t\t\t\t\t\t<div class="form-group ">
+                    \t\t\t\t\t\t\t<button type="button" class="btn btn-primary btn-lg btn-block login-button" onclick="checkRegister()">Register</button>
+                    \t\t\t\t\t\t</div>
+                    \t\t\t\t\t</form>
+                    \t\t\t\t</div>
+                    \t\t\t</div>`
+        document.body.innerHTML = str;
+    }
+
+    function checkRegister() {
+        let user = document.getElementById('username').value;
+        let pass = document.getElementById('password').value;
+        let confirmPass = document.getElementById('confirmPassword').value;
+
+        if (confirmPass == pass) {
+            let obj = {
+                username: user,
+                password: pass,
+                confirmPassword: confirmPass
+            }
+            Register(obj)
+        } else
+            alert("mật khẩu khác nhau");
+
+    }
+
+    function Register(obj) {
+        // console.log(obj)
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            type: 'POST',
+            url: 'http://localhost:8080/register',
+            data: JSON.stringify(obj),
+            success: function (data) {
+                // console.log(data);
+                alert("Thành  công");
+                showLoginForm();
+            },
+
+        });
+    }
+    function loadTopBarUser(){
+        let str ='';
+        if(localStorage.getItem("USERNAME")!=null){
+            str +=`<li><a >${localStorage.getItem("USERNAME")}</a></li>
+                   <li><a >Check out</a></li>
+                   <li><a onclick="logOut()">Log out</a></li>`
+        }
+        else {
+            str +=`<li><a onclick="showRegisterForm()">Register</a></li>
+                    <li><a onclick="showLoginForm()">Log In</a></li>`
+        }
+        document.getElementById('topbarUser').innerHTML = str;
+    }
+    function logOut(){
+        localStorage.clear();
+        loadData(0);
+        loadCategory();
+        loadSaleData(0, 0.01, 0.99);
+        loadTopBarUser();
     }
 </script>
 </body>
