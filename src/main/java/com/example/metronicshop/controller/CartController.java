@@ -30,10 +30,15 @@ public class CartController {
         else
             return new ResponseEntity<>(cart,HttpStatus.OK);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Cart> findByProductId(@RequestParam Long id)
+    @GetMapping("/{productId}")
+    public ResponseEntity<Cart> findByProductId(@RequestParam Long productId)
     {
-        return new ResponseEntity(cartRepository.findAllByProductId(id),HttpStatus.OK);
+        return new ResponseEntity(cartRepository.findAllByProductId(productId),HttpStatus.OK);
+    }
+    @GetMapping("/search-by-userId/{userId}")
+    public ResponseEntity<Cart> findAllByUserId(@PathVariable Long userId)
+    {
+        return new ResponseEntity(cartRepository.findAllByUserId(userId),HttpStatus.OK);
     }
 
     @PostMapping("/add-cart")
@@ -96,7 +101,7 @@ public class CartController {
     public ResponseEntity changeStatus(@RequestParam Long userId)
     {
         //đặt hàng thì tự nhảy vào đây
-        Iterable<Cart> carts=cartService.findAllUserId(userId);
+        Iterable<Cart> carts=cartService.findAllByUserId(userId);
         for (Cart i:carts) {
             i.setStatus(2);
             cartRepository.save(i);

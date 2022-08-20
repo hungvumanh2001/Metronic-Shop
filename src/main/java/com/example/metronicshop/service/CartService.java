@@ -10,6 +10,6 @@ public interface CartService {
     void deleteCart(Long id);
     Cart findProductId(Long productId,Long userId);
     Optional<Cart> findById(Long id);
-    Iterable<Cart> findAllUserId(Long id);
+    Iterable<Cart> findAllByUserId(Long id);
     Iterable<Cart> listUserOrder(Long id,int status);
 }

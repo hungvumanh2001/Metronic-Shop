@@ -39,7 +39,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Iterable<Cart> findAllUserId(Long id) {
+    public Iterable<Cart> findAllByUserId(Long id) {
         return cartRepository.findAllByUserId(id);
     }
 

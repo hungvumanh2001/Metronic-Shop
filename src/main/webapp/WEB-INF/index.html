@@ -160,70 +160,14 @@
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="top-cart-info">
-                <a href="javascript:void(0);" class="top-cart-info-count">3 items</a>
-                <a href="javascript:void(0);" class="top-cart-info-value">$1260</a>
+                <a href="javascript:void(0);" class="top-cart-info-count" id="amountItem">0 items</a>
+                <a href="javascript:void(0);" class="top-cart-info-value" id="amountPrice">$0</a>
             </div>
             <i class="fa fa-shopping-cart"></i>
 
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
-                    <ul class="scroller" style="height: 250px;">
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
+                    <ul class="scroller" style="height: 250px;" id="cartContent">
                         <li>
                             <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
                                                           width="37" height="34"></a>
@@ -681,6 +625,7 @@
     loadSaleData(0, 0.01, 0.99);
 
     loadTopBarUser();
+    loadCard();
 
     function loadData(page) {
         let pre = page - 1 > 0 ? page - 1 : 0;
@@ -1049,15 +994,16 @@
             url: 'http://localhost:8080/login',
             data: JSON.stringify(obj),
             success: function (data) {
-                // console.log(data);
+                console.log(data);
                 localStorage.setItem("TOKEN", data.accessToken);
                 localStorage.setItem("USER", JSON.stringify(data));
                 localStorage.setItem("USERNAME", data.username);
+                localStorage.setItem("USERID", data.id);
                 home();
                 loadData(0);
                 loadCategory();
                 loadSaleData(0, 0.01, 0.99);
-            },
+            }
         });
     }
 
@@ -1148,25 +1094,84 @@
 
         });
     }
-    function loadTopBarUser(){
-        let str ='';
-        if(localStorage.getItem("USERNAME")!=null){
-            str +=`<li><a >${localStorage.getItem("USERNAME")}</a></li>
+
+    function loadTopBarUser() {
+        let str = '';
+        if (localStorage.getItem("USERNAME") != null) {
+            str += `<li><a >${localStorage.getItem("USERNAME")}</a></li>
                    <li><a >Check out</a></li>
                    <li><a onclick="logOut()">Log out</a></li>`
-        }
-        else {
-            str +=`<li><a onclick="showRegisterForm()">Register</a></li>
+        } else {
+            str += `<li><a onclick="showRegisterForm()">Register</a></li>
                     <li><a onclick="showLoginForm()">Log In</a></li>`
         }
         document.getElementById('topbarUser').innerHTML = str;
     }
-    function logOut(){
+
+    function logOut() {
         localStorage.clear();
         loadData(0);
         loadCategory();
         loadSaleData(0, 0.01, 0.99);
         loadTopBarUser();
+    }
+
+    function loadCard(){
+        if(localStorage.getItem("USER")==null){
+            document.getElementById('amountItem').innerHTML = "0 items";
+            document.getElementById('amountPrice').innerHTML = "$0";
+        }
+        else {
+            let user=JSON.parse(localStorage.getItem('USER'));
+            console.log(user);
+            console.log(user.id);
+            $.ajax({
+                headers:{
+                    Authorization:'Bearer '+localStorage.getItem("TOKEN")
+                },
+                type:'GET',
+                url:'http://localhost:8080/carts/search-by-userId/'+user.id,
+                success:function (data) {
+                    if(data==null){
+                        document.getElementById('amountItem').innerHTML = "0 items";
+                        document.getElementById('amountPrice').innerHTML = "$0";
+                    }
+                    else {
+                        let str = '';
+                        let amountItem=0;
+                        let amountPrice=0;
+                        for(let i=0; i<data.length;i++){
+                            amountItem += data[i].number;
+                            if(data[i].product.sale = 0){
+                                amountPrice += data[i].number*data[i].product.price;
+                                str +=`<li>
+                                            <a><img src="${data[i].product.imageRoot}" alt=""
+                                                                          width="37" height="34"></a>
+                                            <span class="cart-content-count">x ${data[i].number}</span>
+                                            <strong><a href="shop-item.html">${data[i].product.title}</a></strong>
+                                            <em>$${data[i].number*data[i].product.price}</em>
+                                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
+                                        </li>`
+                            }
+                            else {
+                                amountPrice += data[i].number*(data[i].product.price*(1-data[i].product.sale));
+                                str +=`<li>
+                                            <a><img src="${data[i].product.imageRoot}" alt=""
+                                                                          width="37" height="34"></a>
+                                            <span class="cart-content-count">x ${data[i].number}</span>
+                                            <strong><a href="shop-item.html">${data[i].product.title}</a></strong>
+                                            <em>$${data[i].number*(data[i].product.price*(1-data[i].product.sale))}</em>
+                                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
+                                        </li>`
+                            }
+                        }
+                        document.getElementById('amountItem').innerHTML = amountItem + " items";
+                        document.getElementById('amountPrice').innerHTML = "$" + amountPrice;
+                        document.getElementById('cartContent').innerHTML = str;
+                    }
+                }
+            });
+        }
     }
 </script>
 </body>
