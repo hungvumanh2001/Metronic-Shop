@@ -168,14 +168,14 @@
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
                     <ul class="scroller" style="height: 250px;" id="cartContent">
-                        <li>
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"
-                                                          width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>
+<!--                        <li>-->
+<!--                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch"-->
+<!--                                                          width="37" height="34"></a>-->
+<!--                            <span class="cart-content-count">x 1</span>-->
+<!--                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>-->
+<!--                            <em>$1230</em>-->
+<!--                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>-->
+<!--                        </li>-->
                     </ul>
                     <div class="text-right">
                         <a href="shop-shopping-cart.html" class="btn btn-default">View Cart</a>
@@ -652,7 +652,7 @@
                                         <h3><a href="shop-item.html">${list.content[i].title}</a></h3>
                                         <div class="pi-price mr-3" style="text-decoration-line:line-through; color: #3c3c3c">$${list.content[i].price}</div>
                                         <div class="pi-price">$${salePrice}</div>
-                                        <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                        <a href="javascript:;" class="btn btn-default add2cart" onclick="addToCart(${list.content[i].id})">Add to cart</a>
                                         <div class="sticker sticker-sale"></div>
                                     </div>
                                 </div>
@@ -670,7 +670,7 @@
                                         </div>
                                         <h3><a href="shop-item.html">${list.content[i].title}</a></h3>
                                         <div class="pi-price">$${list.content[i].price}</div>
-                                        <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                        <a href="javascript:;" class="btn btn-default add2cart" onclick="addToCart(${list.content[i].id})">Add to cart</a>
                                         <div class="sticker sticker-new"></div>
                                     </div>
                                 </div>
@@ -831,7 +831,7 @@
                                         <h3><a href="shop-item.html">${list.content[i].title}</a></h3>
                                         <div class="pi-price mr-3" style="text-decoration-line:line-through; color: #3c3c3c">$${list.content[i].price}</div>
                                         <div class="pi-price">$${salePrice}</div>
-                                        <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                        <a href="javascript:;" class="btn btn-default add2cart" onclick="addToCart(${list.content[i].id})">Add to cart</a>
                                         <div class="sticker sticker-sale"></div>
                                     </div>
                                 </div>
@@ -1114,6 +1114,7 @@
         loadCategory();
         loadSaleData(0, 0.01, 0.99);
         loadTopBarUser();
+        loadCard();
     }
 
     function loadCard(){
@@ -1123,8 +1124,8 @@
         }
         else {
             let user=JSON.parse(localStorage.getItem('USER'));
-            console.log(user);
-            console.log(user.id);
+            // console.log(user);
+            // console.log(user.id);
             $.ajax({
                 headers:{
                     Authorization:'Bearer '+localStorage.getItem("TOKEN")
@@ -1168,6 +1169,92 @@
                         document.getElementById('amountItem').innerHTML = amountItem + " items";
                         document.getElementById('amountPrice').innerHTML = "$" + amountPrice;
                         document.getElementById('cartContent').innerHTML = str;
+                    }
+                }
+            });
+        }
+    }
+    function addToCart(productId){
+        // console.log(productId)
+        if(localStorage.getItem("USER")==null){
+            showLoginForm();
+        }
+        else {
+            let user=JSON.parse(localStorage.getItem('USER'));
+            let kt = false;
+            $.ajax({
+                headers:{
+                    Authorization:'Bearer '+localStorage.getItem('TOKEN')
+                },
+                type:'GET',
+                url:'http://localhost:8080/carts/search-by-userId/'+user.id,
+                success:function (data) {
+                    // console.log(data)
+                    //kiem tra xem mon hang da co trong gio hang chua
+                    for(let i=0;i<data.length;i++){
+                        if(data[i].product.id==productId){
+                            kt = true;
+                        }
+                    }
+                    if(kt){
+                        for(let i=0;i<data.length;i++){
+                            if(data[i].product.id==productId){
+                                let obj={
+                                    id: data[i].id,
+                                    number:data[i].number+1,
+                                    status:1,
+                                    product:{
+                                        id:productId
+                                    },
+                                    user:{
+                                        id:JSON.parse(localStorage.getItem("USER")).id
+                                    }
+                                }
+                                console.log(obj)
+                                // console.log(JSON.parse(localStorage.getItem("USER")).id)
+                                // console.log(data[i].id)
+                                $.ajax({
+                                    headers:{
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json',
+                                        Authorization:'Bearer '+localStorage.getItem('TOKEN')
+                                    },
+                                    type:'PUT',
+                                    url:'http://localhost:8080/carts/update-cart/'+data[i].id,
+                                    data: JSON.stringify(obj),
+                                    success: function () {
+                                        alert('Thêm sản phẩm vào giỏ hàng thành công');
+                                        loadCard();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    else {
+                        let obj = {
+                            number: 1,
+                            status: 1,
+                            product: {
+                                id: productId
+                            },
+                            user: {
+                                id: JSON.parse(localStorage.getItem("USER")).id
+                            }
+                        }
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                Authorization: 'Bearer ' + localStorage.getItem('TOKEN')
+                            },
+                            type: 'POST',
+                            url: 'http://localhost:8080/carts/add-cart',
+                            data: JSON.stringify(obj),
+                            success: function () {
+                                alert('Thêm sản phẩm vào giỏ hàng thành công');
+                                loadCard();
+                            }
+                        });
                     }
                 }
             });

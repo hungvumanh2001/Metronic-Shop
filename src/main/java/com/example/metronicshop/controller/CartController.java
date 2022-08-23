@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Controller
@@ -120,4 +121,15 @@ public class CartController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PutMapping("/update-cart/{id}")
+    public ResponseEntity updateCart(@PathVariable Long id, @RequestBody Cart cart)
+    {
+        Optional<Cart> oldCart = cartRepository.findById(id);
+        if(!oldCart.isPresent()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        cart.setId(id);
+        cartRepository.save(cart);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
