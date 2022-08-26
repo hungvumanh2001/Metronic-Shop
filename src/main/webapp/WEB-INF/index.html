@@ -1151,7 +1151,7 @@
                                             <span class="cart-content-count">x ${data[i].number}</span>
                                             <strong><a href="shop-item.html">${data[i].product.title}</a></strong>
                                             <em>$${data[i].number*data[i].product.price}</em>
-                                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
+                                            <a href="javascript:void(0);" class="del-goods" onclick="deleteCart(${data[i].id})">&nbsp;</a>
                                         </li>`
                             }
                             else {
@@ -1162,7 +1162,7 @@
                                             <span class="cart-content-count">x ${data[i].number}</span>
                                             <strong><a href="shop-item.html">${data[i].product.title}</a></strong>
                                             <em>$${data[i].number*(data[i].product.price*(1-data[i].product.sale))}</em>
-                                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
+                                            <a href="javascript:void(0);" class="del-goods" onclick="deleteCart(${data[i].id})"></a>
                                         </li>`
                             }
                         }
@@ -1259,6 +1259,32 @@
                 }
             });
         }
+    }
+    function deleteCart(id){
+        let notice='';
+        $.ajax({
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem("TOKEN")
+            },
+            type: 'GET',
+            url: 'http://localhost:8080/carts/search-by-cartId/' + id,
+            success: function (data) {
+                notice = 'Xóa thành công món hàng '+data.product.title+' trong giỏ hàng';
+            }
+        });
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem("TOKEN")
+            },
+            type: 'DELETE',
+            url: 'http://localhost:8080/carts/' + id,
+            success: function () {
+                alert(notice);
+                loadCard();
+            }
+        });
     }
 </script>
 </body>
