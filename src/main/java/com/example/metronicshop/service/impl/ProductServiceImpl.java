@@ -40,5 +40,10 @@ public class ProductServiceImpl implements ProductService {
         return repository.findAllBySaleBetween(pageable, from, to);
     }
 
+    @Override
+    public Product findById(Long id) {
+        return repository.findAllById(id);
+    }
+
 
 }
