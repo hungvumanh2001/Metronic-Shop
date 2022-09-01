@@ -1,8 +1,10 @@
 package com.example.metronicshop.controller;
 
+import com.example.metronicshop.model.Cart;
 import com.example.metronicshop.model.JwtResponse;
 import com.example.metronicshop.model.Role;
 import com.example.metronicshop.model.User;
+import com.example.metronicshop.repository.UserRepository;
 import com.example.metronicshop.service.impl.JwtService;
 import com.example.metronicshop.service.RoleService;
 import com.example.metronicshop.service.UserService;
@@ -38,6 +40,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private RoleService roleService;
 
     @Autowired
@@ -50,7 +55,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     @GetMapping("/id")
-    public ResponseEntity<Optional<User>>findById(@RequestParam int id)
+    public ResponseEntity<Optional<User>>findById(@PathVariable Long id)
     {
         Optional<User> user=userService.findById(id);
 
@@ -97,5 +102,16 @@ public class UserController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByUsername(user.getUsername());
         return ResponseEntity.ok(new JwtResponse(jwt, (long) currentUser.getId(), userDetails.getUsername(), userDetails.getAuthorities()));
+    }
+
+    @PutMapping("/update-user/{id}")
+    public ResponseEntity updateCart(@PathVariable Long id, @RequestBody User user) {
+        Optional<User> oldUser = userRepository.findById(id);
+        if (!oldUser.isPresent()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        user.setId(id);
+        userRepository.save(user);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

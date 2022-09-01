@@ -37,6 +37,22 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @GetMapping("/find-all-in-search-result")
+    public ResponseEntity<Iterable<Product>> findAllInSearchResult(@PageableDefault(size = 9) Pageable page) {
+        Iterable<Product> products = productService.findAll(page);
+        if (products == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/find-all-by-name")
+    public ResponseEntity<Iterable<Product>> findAllByName(@PageableDefault(size = 9) Pageable page, @RequestParam String key) {
+        Iterable<Product> products = productService.findAllByTitleContains(page, key);
+        if (products == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
     @GetMapping("/search-by-cateId")
     public ResponseEntity<Iterable<Product>> findAllByCateId(@PageableDefault(size = 3) Pageable page, @RequestParam Long id) {
         Iterable<Product> products = productService.findAllByCategoryId(page, id);

@@ -69,12 +69,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Integer id) {
+    public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
     @Override
-    public UserDetails loadUserById(Integer id) {
+    public UserDetails loadUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (!user.isPresent()) {
             throw new NullPointerException();

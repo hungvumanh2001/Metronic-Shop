@@ -18,9 +18,9 @@ public interface UserService extends UserDetailsService {
 
     User getCurrentUser();
 
-    Optional<User> findById(Integer id);
+    Optional<User> findById(Long id);
 
-    UserDetails loadUserById(Integer id);
+    UserDetails loadUserById(Long id);
 
     boolean checkLogin(User user);
 

@@ -21,6 +21,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findAllByTitleContains(Pageable pageable, String key) {
+        return repository.findAllByTitleContains(pageable, key);
+    }
+
+    @Override
     public void save(Product product) {
         repository.save(product);
     }
