@@ -11,7 +11,7 @@ public interface ProductService {
     Page<Product> findAllByTitleContains(Pageable pageable, String key);
     void save(Product product);
     Page<Product> findAllByCategoryId(Pageable pageable,Long id);
-    Iterable<Product> findAllByPriceBetween(float from,float to);
+    Page<Product> findAllByPriceBetween(Pageable pageable,float from,float to);
     Iterable<Product> findAllBySaleBetween(Pageable pageable, float from,float to);
     Product findById(Long id);
 }

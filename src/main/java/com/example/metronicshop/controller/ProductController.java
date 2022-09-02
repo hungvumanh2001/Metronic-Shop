@@ -62,8 +62,8 @@ public class ProductController {
     }
 
     @GetMapping("/price-between")
-    public ResponseEntity<Iterable<Product>> findAllByPriceBetween(@RequestParam float from, @RequestParam float to) {
-        Iterable<Product> products = productService.findAllByPriceBetween(from, to);
+    public ResponseEntity<Iterable<Product>> findAllByPriceBetween(@PageableDefault(size = 9) Pageable page,@RequestParam float from, @RequestParam float to) {
+        Iterable<Product> products = productService.findAllByPriceBetween(page, from, to);
         if (products == null)
             return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(products, HttpStatus.OK);

@@ -664,6 +664,7 @@
         for (let i = 0; i < list.length; i++) {
             str += `<li><a onclick="findProductByCategoryId(0, ${list[i].id})">${list[i].name}</a></li>`;
         }
+        console.log(user.roles)
         if (user.roles.authority == "ROLE_ADMIN") {
             str += `<li>
                     <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes&amp;utm_source=download&amp;utm_medium=banner&amp;utm_campaign=metronic_frontend_freebie"
@@ -1844,11 +1845,11 @@
                               <div class="col-md-10 col-sm-10">
                                 <div class="pull-right">
                                   <label class="control-label">Price:</label>
-                                  <select class="form-control input-sm">
-                                    <option value="#?limit=24" selected="selected">Default</option>
-                                    <option value="#?limit=25">Lớn hớn 500.000</option>
-                                    <option value="#?limit=25">Từ 200.000 đến 500.000</option>
-                                    <option value="#?limit=50">Nhỏ hơn 200.000</option>
+                                  <select class="form-control input-sm" onchange="findAllByPrice(this, 0)">
+                                    <option value="0" selected="selected">Default</option>
+                                    <option value="1">Lớn hớn 500.000</option>
+                                    <option value="2">Từ 200.000 đến 500.000</option>
+                                    <option value="3">Nhỏ hơn 200.000</option>
                                   </select>
                                 </div>
                                 <div class="pull-right">
@@ -1997,6 +1998,87 @@
                                   <li><a href="javascript:;" onclick="searchByKey(3)">4</a></li>
                                   <li><a href="javascript:;" onclick="searchByKey(4)">5</a></li>
                                   <li><a href="javascript:;" onclick="searchByKey(${next})">&raquo;</a></li>
+                                </ul>
+                              </div>`;
+                document.getElementById('searchContent').innerHTML = tmp;
+                document.getElementById('page').innerHTML = tmpPage;
+            }
+        });
+    }
+
+    function findAllByPrice(obj, page) {
+        let pre = page - 1 > 0 ? page - 1 : 0;
+        let next = page + 1;
+        let tmp = '';
+        let value = obj.value;
+        let from = 0;
+        let to = 0;
+        switch (value) {
+            case "0":
+                showSearch(0);
+                break;
+            case "1":
+                from = 500000;
+                to = 1000000;
+                break;
+            case "2":
+                from = 200000;
+                to = 500000;
+                break;
+            case "3":
+                from = 0;
+                to = 200000;
+                break;
+        }
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/products/price-between?page=' + page + '&from=' + from + '&to=' + to,
+            success: function (list) {
+                for (let i = 0; i < list.content.length; i++) {
+                    if (list.content[i].sale != 0) {
+                        let salePrice = list.content[i].price * (1 - list.content[i].sale);
+                        tmp += `<div class="col-md-4 col-sm-6 col-xs-12">
+                                    <div class="product-item">
+                                        <div class="pi-img-wrapper">
+                                            <img src="${list.content[i].imageFirst}" class="img-responsive">
+                                            <div>
+                                              <a href="${list.content[i].imageRoot}" class="btn btn-default fancybox-button">Zoom</a>
+                                              <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
+                                            </div>
+                                         </div>
+                                         <h3><a >${list.content[i].title}</a></h3>
+                                         <div class="pi-price" style="text-decoration-line:line-through; color: #3c3c3c">$${list.content[i].price}</div>
+                                         <div class="pi-price">$${salePrice}</div>
+                                         <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                    </div>
+                                </div>`
+                    } else {
+                        tmp += `<div class="col-md-4 col-sm-6 col-xs-12">
+                                    <div class="product-item">
+                                         <div class="pi-img-wrapper">
+                                            <img src="${list.content[i].imageFirst}" class="img-responsive">
+                                            <div>
+                                              <a href="${list.content[i].imageRoot}" class="btn btn-default fancybox-button">Zoom</a>
+                                              <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
+                                            </div>
+                                         </div>
+                                         <h3><a >${list.content[i].title}</a></h3>
+                                         <div class="pi-price">$${list.content[i].price}</div>
+                                         <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                    </div>
+                                </div>`
+                    }
+                }
+                //Phân trang
+                let tmpPage = `<div class="col-md-8 col-sm-8">
+                                <ul class="pagination pull-right">
+                                  <li><a href="javascript:;" onclick="findAllByPrice(value, ${pre})">&laquo;</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 0)">1</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 1)">2</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 2)">3</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 3)">4</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 4)">5</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(value, ${next})">&raquo;</a></li>
                                 </ul>
                               </div>`;
                 document.getElementById('searchContent').innerHTML = tmp;

@@ -36,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Iterable<Product> findAllByPriceBetween(float from, float to) {
-        return repository.findAllByPriceBetween(from,to);
+    public Page<Product> findAllByPriceBetween(Pageable pageable, float from, float to) {
+        return repository.findAllByPriceBetween(pageable,from,to);
     }
 
     @Override
