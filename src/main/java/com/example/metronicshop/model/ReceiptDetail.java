@@ -12,16 +12,20 @@ public class ReceiptDetail {
     private Receipt receipt;
     @ManyToOne
     private Product product;
+
+    private int number;
+
     private int status;
 
     public ReceiptDetail() {
     }
 
-    public ReceiptDetail(Long id, Receipt receipt, Product product, int status) {
+    public ReceiptDetail(Long id, Receipt receipt, Product product, int status, int number) {
         this.id = id;
         this.receipt = receipt;
         this.product = product;
         this.status = status;
+        this.number = number;
     }
 
     public Long getId() {
@@ -54,5 +58,13 @@ public class ReceiptDetail {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

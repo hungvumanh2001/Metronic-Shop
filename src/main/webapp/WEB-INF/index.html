@@ -155,7 +155,7 @@
 <!-- BEGIN HEADER -->
 <div class="header">
     <div class="container">
-        <a class="site-logo" href="shop-index.html"><img src="assets/corporate/img/logos/logo-shop-red.png"
+        <a class="site-logo" onclick="home()"><img src="assets/corporate/img/logos/logo-shop-red.png"
                                                          alt="Metronic Shop UI"></a>
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
@@ -181,7 +181,7 @@
                         <!--                        </li>-->
                     </ul>
                     <div class="text-right">
-                        <a href="shop-shopping-cart.html" class="btn btn-default">View Cart</a>
+                        <a class="btn btn-default" onclick="viewCart()">View Cart</a>
                         <a href="shop-checkout.html" class="btn btn-primary">Checkout</a>
                     </div>
                 </div>
@@ -664,11 +664,9 @@
         for (let i = 0; i < list.length; i++) {
             str += `<li><a onclick="findProductByCategoryId(0, ${list[i].id})">${list[i].name}</a></li>`;
         }
-        console.log(user.roles)
-        if (user.roles.authority == "ROLE_ADMIN") {
+        if (user.roles[0].authority == "ROLE_ADMIN") {
             str += `<li>
-                    <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes&amp;utm_source=download&amp;utm_medium=banner&amp;utm_campaign=metronic_frontend_freebie"
-                       target="_blank">Admin theme</a></li>
+                    <a >Admin theme</a></li>
                     <!-- BEGIN TOP SEARCH -->
                     <li class="menu-search">
                         <span class="sep"></span>
@@ -873,7 +871,7 @@
                     <!-- BEGIN HEADER -->
                     <div class="header">
                         <div class="container">
-                            <a class="site-logo" href="shop-index.html"><img src="assets/corporate/img/logos/logo-shop-red.png"
+                            <a class="site-logo" onclick="home()"><img src="assets/corporate/img/logos/logo-shop-red.png"
                                                                              alt="Metronic Shop UI"></a>
 
                             <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
@@ -899,7 +897,7 @@
                                             <!--                        </li>-->
                                         </ul>
                                         <div class="text-right">
-                                            <a href="shop-shopping-cart.html" class="btn btn-default">View Cart</a>
+                                            <a class="btn btn-default" onclick="viewCart()">View Cart</a>
                                             <a href="shop-checkout.html" class="btn btn-primary">Checkout</a>
                                         </div>
                                     </div>
@@ -1247,49 +1245,46 @@
 
                     </div>`
         document.body.innerHTML = str;
+        loadData(0);
+        loadCategory();
+        loadSaleData(0, 0.01, 0.99);
+
+        loadTopBarUser();
+        loadCard();
     }
 
     function showLoginForm() {
         let str = `<div class="container">
-                    \t<div class="d-flex justify-content-center h-100">
-                    \t\t<div class="card">
-                    \t\t\t<div class="card-header">
-                    \t\t\t\t<h3>Sign In</h3>
-                    \t\t\t\t<div class="d-flex justify-content-end social_icon">
-                    \t\t\t\t\t<span><i class="fab fa-facebook-square"></i></span>
-                    \t\t\t\t\t<span><i class="fab fa-google-plus-square"></i></span>
-                    \t\t\t\t\t<span><i class="fab fa-twitter-square"></i></span>
-                    \t\t\t\t</div>
-                    \t\t\t</div>
-                    \t\t\t<div class="card-body">
-                    \t\t\t\t\t<div class="input-group form-group">
-                    \t\t\t\t\t\t<div class="input-group-prepend">
-                    \t\t\t\t\t\t\t<span class="input-group-text"><i class="fas fa-user"></i></span>
-                    \t\t\t\t\t\t</div>
-                    \t\t\t\t\t\t<input type="text" class="form-control" placeholder="username" id="user">
-                    \t\t\t\t\t\t
-                    \t\t\t\t\t</div>
-                    \t\t\t\t\t<div class="input-group form-group">
-                    \t\t\t\t\t\t<div class="input-group-prepend">
-                    \t\t\t\t\t\t\t<span class="input-group-text"><i class="fas fa-key"></i></span>
-                    \t\t\t\t\t\t</div>
-                    \t\t\t\t\t\t<input type="password" class="form-control" placeholder="password" id="pass">
-                    \t\t\t\t\t</div>
-                    \t\t\t\t\t<div class="form-group">
-                    \t\t\t\t\t\t<button type="submit" class="btn float-right login_btn" onclick="checkLogin()">Login</button>
-                    \t\t\t\t\t</div>
-                    \t\t\t</div>
-                    \t\t\t<div class="card-footer">
-                    \t\t\t\t<div class="d-flex justify-content-center links">
-                    \t\t\t\t\tDon't have an account?<a onclick="showRegisterForm()">Sign Up</a>
-                    \t\t\t\t</div>
-                    \t\t\t\t<div class="d-flex justify-content-center">
-                    \t\t\t\t\t<a href="#">Forgot your password?</a>
-                    \t\t\t\t</div>
-                    \t\t\t</div>
-                    \t\t</div>
-                    \t</div>
-                    </div>`
+                        <div class="row">
+                          <div class="col-md-6 offset-md-3">
+                            <h2 class="text-center text-dark mt-5">Login Form</h2>
+                            <div class="card my-5">
+
+                              <form class="card-body cardbody-color p-lg-5">
+
+                                <div class="text-center">
+                                  <img src="https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397__340.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                                    width="200px" alt="profile">
+                                </div>
+
+                                <div class="mb-3">
+                                  <input type="text" class="form-control" id="user" aria-describedby="emailHelp"
+                                    placeholder="Username">
+                                </div>
+                                <div class="mb-3">
+                                  <input type="password" class="form-control" id="pass" placeholder="Password">
+                                </div>
+                                <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100" onclick="checkLogin()">Login</button></div>
+                                <div id="emailHelp" class="form-text text-center mb-5 text-dark">Not
+                                  Registered? <a class="text-dark fw-bold" onclick="showRegisterForm()"> Create an
+                                    Account</a>
+                                </div>
+                              </form>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>`
         document.body.innerHTML = str;
     }
 
@@ -1417,7 +1412,7 @@
     function loadTopBarUser() {
         let str = '';
         if (localStorage.getItem("USERNAME") != null) {
-            str += `<li><a onclick="showAccount()">${localStorage.getItem("USERNAME")}</a></li>
+            str += `<li onclick="showAccount()"><a>${localStorage.getItem("USERNAME")}</a></li>
                    <li><a >Check out</a></li>
                    <li><a onclick="logOut()">Log out</a></li>`
         } else {
@@ -1460,7 +1455,7 @@
                         let amountPrice = 0;
                         for (let i = 0; i < data.length; i++) {
                             amountItem += data[i].number;
-                            if (data[i].product.sale = 0) {
+                            if (data[i].product.sale == 0) {
                                 amountPrice += data[i].number * data[i].product.price;
                                 str += `<li>
                                             <a><img src="${data[i].product.imageRoot}" alt=""
@@ -1478,7 +1473,6 @@
                                             <span class="cart-content-count">x ${data[i].number}</span>
                                             <strong><a href="shop-item.html">${data[i].product.title}</a></strong>
                                             <em>$${data[i].number * (data[i].product.price * (1 - data[i].product.sale))}</em>
-                                            <a href="javascript:void(0);" class="del-goods" onclick="deleteCart(${data[i].id})"></a>
                                         </li>`
                             }
                         }
@@ -1597,7 +1591,7 @@
             url: 'http://localhost:8080/carts/' + id,
             success: function () {
                 alert(notice);
-                loadCard();
+                viewCart();
             }
         });
     }
@@ -1730,7 +1724,7 @@
                     \t               \t\t<hr />
                     \t               \t</div>
                     \t            </div>
-                    \t\t\t\t\t<form class="form-horizontal" method="post" action="#">
+                    \t\t\t\t\t<form class="form-horizontal" method="post">
                     \t\t\t\t\t\t
 
                     \t\t\t\t\t\t<div class="form-group">
@@ -1788,7 +1782,8 @@
         let oldPass = document.getElementById('oldPassword').value;
         let newPass = document.getElementById('newPassword').value;
         let confirmNewPass = document.getElementById('confirmNewPassword').value;
-        if (username.equals(user.username) && oldPass.equals(localStorage.getItem('PASSWORD')) && newPass.equals(confirmNewPass)) {
+        console.log(confirmNewPass);
+        if (username==user.username && oldPass==localStorage.getItem('PASSWORD') && newPass==confirmNewPass) {
             let obj = {
                 id: user.id,
                 username: username,
@@ -1796,6 +1791,7 @@
                 password: newPass,
                 confirmPassword: confirmNewPass
             }
+            console.log(obj);
             $.ajax({
                 headers: {
                     'Accept': 'application/json',
@@ -1845,7 +1841,7 @@
                               <div class="col-md-10 col-sm-10">
                                 <div class="pull-right">
                                   <label class="control-label">Price:</label>
-                                  <select class="form-control input-sm" onchange="findAllByPrice(this, 0)">
+                                  <select class="form-control input-sm" id="selectPrice" onchange="findAllByPrice(0)">
                                     <option value="0" selected="selected">Default</option>
                                     <option value="1">Lớn hớn 500.000</option>
                                     <option value="2">Từ 200.000 đến 500.000</option>
@@ -2006,11 +2002,11 @@
         });
     }
 
-    function findAllByPrice(obj, page) {
+    function findAllByPrice(page)  {
         let pre = page - 1 > 0 ? page - 1 : 0;
         let next = page + 1;
         let tmp = '';
-        let value = obj.value;
+        let value = document.getElementById('selectPrice').value;
         let from = 0;
         let to = 0;
         switch (value) {
@@ -2030,14 +2026,15 @@
                 to = 200000;
                 break;
         }
-        $.ajax({
-            type: 'GET',
-            url: 'http://localhost:8080/products/price-between?page=' + page + '&from=' + from + '&to=' + to,
-            success: function (list) {
-                for (let i = 0; i < list.content.length; i++) {
-                    if (list.content[i].sale != 0) {
-                        let salePrice = list.content[i].price * (1 - list.content[i].sale);
-                        tmp += `<div class="col-md-4 col-sm-6 col-xs-12">
+        if(value>0){
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/products/price-between?page=' + page + '&from=' + from + '&to=' + to,
+                success: function (list) {
+                    for (let i = 0; i < list.content.length; i++) {
+                        if (list.content[i].sale != 0) {
+                            let salePrice = list.content[i].price * (1 - list.content[i].sale);
+                            tmp += `<div class="col-md-4 col-sm-6 col-xs-12">
                                     <div class="product-item">
                                         <div class="pi-img-wrapper">
                                             <img src="${list.content[i].imageFirst}" class="img-responsive">
@@ -2052,8 +2049,8 @@
                                          <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
                                     </div>
                                 </div>`
-                    } else {
-                        tmp += `<div class="col-md-4 col-sm-6 col-xs-12">
+                        } else {
+                            tmp += `<div class="col-md-4 col-sm-6 col-xs-12">
                                     <div class="product-item">
                                          <div class="pi-img-wrapper">
                                             <img src="${list.content[i].imageFirst}" class="img-responsive">
@@ -2067,24 +2064,156 @@
                                          <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
                                     </div>
                                 </div>`
+                        }
                     }
-                }
-                //Phân trang
-                let tmpPage = `<div class="col-md-8 col-sm-8">
+                    //Phân trang
+                    let tmpPage = `<div class="col-md-8 col-sm-8">
                                 <ul class="pagination pull-right">
-                                  <li><a href="javascript:;" onclick="findAllByPrice(value, ${pre})">&laquo;</a></li>
-                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 0)">1</a></li>
-                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 1)">2</a></li>
-                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 2)">3</a></li>
-                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 3)">4</a></li>
-                                  <li><a href="javascript:;" onclick="findAllByPrice(value, 4)">5</a></li>
-                                  <li><a href="javascript:;" onclick="findAllByPrice(value, ${next})">&raquo;</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(${pre})">&laquo;</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(0)">1</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(1)">2</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(2)">3</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(3)">4</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(4)">5</a></li>
+                                  <li><a href="javascript:;" onclick="findAllByPrice(${next})">&raquo;</a></li>
                                 </ul>
                               </div>`;
-                document.getElementById('searchContent').innerHTML = tmp;
-                document.getElementById('page').innerHTML = tmpPage;
-            }
-        });
+                    document.getElementById('searchContent').innerHTML = tmp;
+                    document.getElementById('page').innerHTML = tmpPage;
+                }
+            });
+        }
+    }
+
+    function viewCart(){
+        let str = `<div class="container">
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        <div class="row margin-bottom-40">
+          <!-- BEGIN CONTENT -->
+          <div class="col-md-12 col-sm-12">
+            <h1>Shopping cart</h1>
+            <div class="goods-page">
+              <div class="goods-data clearfix">
+                <div class="table-wrapper-responsive">
+                <table summary="Shopping cart" id="shopping-cart">
+
+                </table>
+                </div>
+
+                <div class="shopping-total">
+                  <ul>
+                    <li class="shopping-total-price">
+                      <em>Total</em>
+                      <strong class="price" id="amount-price-cart"></strong>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <button class="btn btn-default" type="submit">Continue shopping <i class="fa fa-shopping-cart"></i></button>
+              <button class="btn btn-primary" type="submit">Checkout <i class="fa fa-check"></i></button>
+            </div>
+          </div>
+          <!-- END CONTENT -->
+        </div>
+        </div>`
+        document.getElementById('main').innerHTML = str;
+        if (localStorage.getItem("USER") == null) {
+            document.getElementById('amountItem').innerHTML = "0 items";
+            document.getElementById('amountPrice').innerHTML = "$0";
+        } else {
+            let user = JSON.parse(localStorage.getItem('USER'));
+            $.ajax({
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem("TOKEN")
+                },
+                type: 'GET',
+                url: 'http://localhost:8080/carts/search-by-userId/' + user.id,
+                success: function (data) {
+                    if (data == null) {
+                        document.getElementById('amountItem').innerHTML = "0 items";
+                        document.getElementById('amountPrice').innerHTML = "$0";
+                    } else {
+                        let str = `<tr>
+                                        <th class="goods-page-image">Image</th>
+                                        <th class="goods-page-description">Description</th>
+                                        <th class="goods-page-ref-no">Status</th>
+                                        <th class="goods-page-quantity">Quantity</th>
+                                        <th class="goods-page-price">Unit price</th>
+                                        <th class="goods-page-total" colspan="2">Total</th>
+                                    </tr>`;
+                        let amountPrice = 0;
+                        let amountProductPrice = 0;
+                        let productPrice = 0;
+                        for (let i = 0; i < data.length; i++) {
+                            amountItem += data[i].number;
+                            if (data[i].product.sale == 0) {
+                                amountPrice += data[i].number * data[i].product.price;
+                                amountProductPrice = data[i].number * data[i].product.price;
+                                productPrice = data[i].product.price;
+                                str += `<tr>
+                                        <td class="goods-page-image">
+                                          <a href="javascript:;"><img src="${data[i].product.imageFirst}"></a>
+                                        </td>
+                                        <td class="goods-page-description">
+                                          <h3><a href="javascript:;">${data[i].product.title}</a></h3>
+                                          <em>${data[i].product.description}</em>
+                                        </td>
+                                        <td class="goods-page-ref-no">
+                                          Chưa checkout
+                                        </td>
+                                        <td class="goods-page-quantity">
+                                          <div class="product-quantity">
+                                              <input id="product-quantity2" type="text" value="${data[i].number}" readonly class="form-control input-sm">
+                                          </div>
+                                        </td>
+                                        <td class="goods-page-price">
+                                          <strong><span>$</span>${productPrice}</strong>
+                                        </td>
+                                        <td class="goods-page-total">
+                                          <strong><span>$</span>${amountProductPrice}</strong>
+                                        </td>
+                                        <td class="del-goods-col">
+                                          <a class="del-goods" href="javascript:;" onclick="deleteCart(${data[i].product.id})">&nbsp</a>
+                                        </td>
+                                      </tr>`
+                            } else {
+                                amountPrice += data[i].number * (data[i].product.price * (1 - data[i].product.sale));
+                                amountProductPrice = data[i].number * (data[i].product.price * (1 - data[i].product.sale));
+                                productPrice = data[i].product.price * (1 - data[i].product.sale);
+                                str += `<tr>
+                                        <td class="goods-page-image">
+                                          <a href="javascript:;"><img src="${data[i].product.imageFirst}"></a>
+                                        </td>
+                                        <td class="goods-page-description">
+                                          <h3><a href="javascript:;">${data[i].product.title}</a></h3>
+                                          <em>${data[i].product.description}</em>
+                                        </td>
+                                        <td class="goods-page-ref-no">
+                                          Chưa checkout
+                                        </td>
+                                        <td class="goods-page-quantity">
+                                          <div class="product-quantity">
+                                              <input id="product-quantity2" type="text" value="${data[i].number}" readonly class="form-control input-sm">
+                                          </div>
+                                        </td>
+                                        <td class="goods-page-price">
+                                          <strong><span>$</span>${productPrice}</strong>
+                                        </td>
+                                        <td class="goods-page-total">
+                                          <strong><span>$</span>${amountProductPrice}</strong>
+                                        </td>
+                                        <td class="del-goods-col">
+                                          <a class="del-goods" href="javascript:;" onclick="deleteCart(${data[i].id})">&nbsp</a>
+                                        </td>
+                                      </tr>`
+                            }
+                        }
+                        document.getElementById('shopping-cart').innerHTML = str;
+                        document.getElementById('amount-price-cart').innerHTML = "$" + amountPrice;
+                    }
+                }
+            });
+        }
     }
 </script>
 <!-- END BODY -->

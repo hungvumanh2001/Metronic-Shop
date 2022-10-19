@@ -86,8 +86,10 @@ public class UserController {
             roles1.add(role1);
             user.setRoles(roles1);
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+        user.setPassword(user.getPassword());
+        user.setConfirmPassword(user.getConfirmPassword());
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }

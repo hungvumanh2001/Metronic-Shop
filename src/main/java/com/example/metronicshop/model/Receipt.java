@@ -17,19 +17,17 @@ public class Receipt {
     private String sdt;
 
     private int status;
-    private int number;
 
     public Receipt() {
     }
 
-    public Receipt(Long id, User user, String sdt, int status, int number) {
+    public Receipt(Long id, User user, String sdt, int status) {
         this.id = id;
         this.user = user;
 
         this.sdt = sdt;
 
         this.status = status;
-        this.number = number;
     }
 
     public Long getId() {
@@ -65,11 +63,4 @@ public class Receipt {
         this.status = status;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
 }

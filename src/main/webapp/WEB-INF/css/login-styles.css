@@ -2,88 +2,164 @@
 
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
-html,body{
-    /*background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');*/
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 100%;
-    font-family: 'Numans', sans-serif;
+/*html,body{*/
+/*    !*background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');*!*/
+/*    background-size: cover;*/
+/*    background-repeat: no-repeat;*/
+/*    height: 100%;*/
+/*    font-family: 'Numans', sans-serif;*/
+/*}*/
+
+/*.container{*/
+/*    height: 100%;*/
+/*    align-content: center;*/
+/*}*/
+
+/*.card{*/
+/*    height: 370px;*/
+/*    margin-top: auto;*/
+/*    margin-bottom: auto;*/
+/*    width: 400px;*/
+/*    background-color: rgba(0,0,0,0.5) !important;*/
+/*}*/
+
+/*.social_icon span{*/
+/*    font-size: 60px;*/
+/*    margin-left: 10px;*/
+/*    color: #FFC312;*/
+/*}*/
+
+/*.social_icon span:hover{*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.card-header h3{*/
+/*    color: white;*/
+/*}*/
+
+/*.social_icon{*/
+/*    position: absolute;*/
+/*    right: 20px;*/
+/*    top: -45px;*/
+/*}*/
+
+/*.input-group-prepend span{*/
+/*    width: 50px;*/
+/*    background-color: #FFC312;*/
+/*    color: black;*/
+/*    border:0 !important;*/
+/*}*/
+
+/*input:focus{*/
+/*    outline: 0 0 0 0  !important;*/
+/*    box-shadow: 0 0 0 0 !important;*/
+
+/*}*/
+
+/*.remember{*/
+/*    color: white;*/
+/*}*/
+
+/*.remember input*/
+/*{*/
+/*    width: 20px;*/
+/*    height: 20px;*/
+/*    margin-left: 15px;*/
+/*    margin-right: 5px;*/
+/*}*/
+
+/*.login_btn{*/
+/*    color: black;*/
+/*    background-color: #FFC312;*/
+/*    width: 100px;*/
+/*}*/
+
+/*.login_btn:hover{*/
+/*    color: black;*/
+/*    background-color: white;*/
+/*}*/
+
+/*.links{*/
+/*    color: white;*/
+/*}*/
+
+/*.links a{*/
+/*    margin-left: 4px;*/
+/*}*/
+.btn-color{
+    background-color: #0e1c36;
+    color: #fff;
+
 }
 
-.container{
-    height: 100%;
-    align-content: center;
+.profile-image-pic{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
 }
 
-.card{
-    height: 370px;
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 400px;
-    background-color: rgba(0,0,0,0.5) !important;
+
+
+.cardbody-color{
+    background-color: #ebf2fa;
 }
 
-.social_icon span{
-    font-size: 60px;
-    margin-left: 10px;
-    color: #FFC312;
+a{
+    text-decoration: none;
 }
 
-.social_icon span:hover{
-    color: white;
+[type=checkbox]:checked + span:before {/* <-- style its checked state */
+    font-family: FontAwesome;
+    font-size: 16px;
+    content: "\f00c";
+    position: absolute;
+    top: -4px;
+    color: #896cec;
+    left: -1px;
+    width: 13px;
+}
+
+.typcn {
+    position: absolute;
+    left: 339px;
+    top: 282px;
+    color: #3b476b;
+    font-size: 22px;
     cursor: pointer;
 }
 
-.card-header h3{
-    color: white;
+.typcn.active {
+    color: #7f60eb;
 }
 
-.social_icon{
-    position: absolute;
-    right: 20px;
-    top: -45px;
-}
-
-.input-group-prepend span{
-    width: 50px;
-    background-color: #FFC312;
-    color: black;
-    border:0 !important;
-}
-
-input:focus{
-    outline: 0 0 0 0  !important;
-    box-shadow: 0 0 0 0 !important;
-
-}
-
-.remember{
-    color: white;
-}
-
-.remember input
-{
-    width: 20px;
+.error {
+    background: #ff3333;
+    text-align: center;
+    width: 337px;
     height: 20px;
-    margin-left: 15px;
-    margin-right: 5px;
-}
-
-.login_btn{
-    color: black;
-    background-color: #FFC312;
-    width: 100px;
-}
-
-.login_btn:hover{
-    color: black;
-    background-color: white;
-}
-
-.links{
+    padding: 2px;
+    border: 0;
+    border-radius: 5px;
+    margin: 10px auto 10px;
+    position: absolute;
+    top: 31%;
+    left: 7.2%;
     color: white;
+    display: none;
 }
 
-.links a{
-    margin-left: 4px;
+.footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    top: 605px;
+    width: 100%;
+    color: #78797d;
+    font-size: 14px;
+    text-align: center;
+}
+
+.footer .fa {
+    color: #7f5feb;;
 }
