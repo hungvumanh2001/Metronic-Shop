@@ -1,9 +1,7 @@
 package com.example.metronicshop.model;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Receipt {
@@ -41,6 +39,16 @@ public class Receipt {
         this.status = status;
         this.priceTotal = priceTotal;
         this.date = date;
+    }
+    public Receipt(Receipt entity, boolean collapse) {
+        this.id = entity.getId();
+        this.user = entity.getUser();
+        this.fullname = entity.getFullname();
+        this.sdt = entity.getSdt();
+        this.address = entity.getAddress();
+        this.status = entity.getStatus();
+        this.priceTotal = entity.getPriceTotal();
+        this.date = entity.getDate();
     }
 
     public Long getId() {
