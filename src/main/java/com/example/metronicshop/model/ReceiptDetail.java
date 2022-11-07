@@ -27,6 +27,13 @@ public class ReceiptDetail {
         this.status = status;
         this.number = number;
     }
+    public ReceiptDetail(ReceiptDetail entity, boolean collapse) {
+        this.id = entity.getId();
+        this.receipt = new Receipt(entity.getReceipt(), true);
+        this.product = entity.getProduct();
+        this.status = entity.getStatus();
+        this.number = entity.getNumber();
+    }
 
     public Long getId() {
         return id;

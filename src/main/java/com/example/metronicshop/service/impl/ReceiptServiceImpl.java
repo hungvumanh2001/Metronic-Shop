@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
@@ -47,5 +48,10 @@ public class ReceiptServiceImpl implements ReceiptService {
             receipt.setReceiptDetails(receiptDetails);
         }
         receiptRepository.save(receipt);
+    }
+
+    @Override
+    public List<Receipt> findAllByUserId(Long userId) {
+        return receiptRepository.findAllByUserId(userId);
     }
 }

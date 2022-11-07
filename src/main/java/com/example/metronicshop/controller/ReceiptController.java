@@ -1,6 +1,5 @@
 package com.example.metronicshop.controller;
 
-import com.example.metronicshop.model.Cart;
 import com.example.metronicshop.model.Receipt;
 import com.example.metronicshop.service.ReceiptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -26,5 +26,9 @@ public class ReceiptController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @GetMapping("/find-all-by-user")
+    public ResponseEntity<List<Receipt>> findAllByUser(@RequestParam Long userId) {
+        return new ResponseEntity(receiptService.findAllByUserId(userId),HttpStatus.OK);
+    }
 
 }

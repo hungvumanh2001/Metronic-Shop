@@ -662,7 +662,7 @@
         for (let i = 0; i < list.length; i++) {
             str += `<li><a onclick="findProductByCategoryId(0, ${list[i].id})">${list[i].name}</a></li>`;
         }
-        if(localStorage.getItem('USER')!=null){
+        if (localStorage.getItem('USER') != null) {
             let user = JSON.parse(localStorage.getItem('USER'));
             if (user.roles[0].authority == "ROLE_ADMIN") {
                 str += `<li><a onclick="showAdmin()">Admin theme</a></li>`
@@ -1266,7 +1266,7 @@
                                 <div class="mb-3">
                                   <input type="password" class="form-control" id="pass" placeholder="Password">
                                 </div>
-                                <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100" onclick="checkLogin()">Login</button></div>
+                                <div class="text-center"><button class="btn btn-color px-5 mb-5 w-100" onclick="checkLogin()">Login</button></div>
                                 <div id="emailHelp" class="form-text text-center mb-5 text-dark">Not
                                   Registered? <a class="text-dark fw-bold" onclick="showRegisterForm()"> Create an
                                     Account</a>
@@ -1455,7 +1455,6 @@
                                             <span class="cart-content-count">x ${data[i].number}</span>
                                             <strong><a href="shop-item.html">${data[i].product.title}</a></strong>
                                             <em>$${data[i].number * data[i].product.price}</em>
-                                            <a href="javascript:void(0);" class="del-goods" onclick="deleteCart(${data[i].id})">&nbsp;</a>
                                         </li>`
                             } else {
                                 amountPrice += data[i].number * (data[i].product.price * (1 - data[i].product.sale));
@@ -2101,7 +2100,7 @@
                   </ul>
                 </div>
               </div>
-              <button class="btn btn-default" type="submit">Continue shopping <i class="fa fa-shopping-cart"></i></button>
+              <button class="btn btn-default" type="submit" onclick="showCheckOutHistory()">Checkout History <i class="fa fa-shopping-cart"></i></button>
               <button class="btn btn-primary" type="submit" onclick="showCheckOut()">Checkout <i class="fa fa-check"></i></button>
             </div>
           </div>
@@ -2375,23 +2374,21 @@
                     let obj = {
                         user: JSON.parse(localStorage.getItem('USER')),
                         receiptDetails: [],
-                        fullname: fullname ? fullname:"",
-                        sdt:telephone?telephone :"",
-                        address:address?address: "",
+                        fullname: fullname ? fullname : "",
+                        sdt: telephone ? telephone : "",
+                        address: address ? address : "",
                         status: 0,
                         priceTotal: null
                     }
 
 
-
-
                     for (let i = 0; i < data.length; i++) {
-                        obj.receiptDetails.push({product:data[i].product,number:data[i].number})
-                        if(data[i].product.sale==0){
+                        obj.receiptDetails.push({product: data[i].product, number: data[i].number})
+                        if (data[i].product.sale == 0) {
                             priceTotal += data[i].product.price * data[i].number;
                         }
-                        if(data[i].product.sale>0){
-                            priceTotal += (1-data[i].product.sale) * data[i].product.price * data[i].number;
+                        if (data[i].product.sale > 0) {
+                            priceTotal += (1 - data[i].product.sale) * data[i].product.price * data[i].number;
                         }
 
                         $.ajax({
@@ -2408,9 +2405,7 @@
                         });
                     }
 
-                    let newObj = {...obj,priceTotal:priceTotal}
-
-                    console.log(newObj);
+                    let newObj = {...obj, priceTotal: priceTotal}
 
                     $.ajax({
                         headers: {
@@ -2431,8 +2426,180 @@
             }
         });
     }
-    function showAdmin(){
 
+    function showAdmin() {
+
+    }
+
+    function showCheckOutHistory() {
+        let str = `<div class="container">
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        <div class="row margin-bottom-40">
+          <!-- BEGIN CONTENT -->
+          <div class="col-md-12 col-sm-12">
+            <h1>History Checkout</h1>
+            <div class="goods-page">
+              <div class="goods-data clearfix">
+                <div class="table-wrapper-responsive">
+                <table summary="Shopping cart" id="receipt">
+
+                </table>
+                </div>
+              </div>
+              <button class="btn btn-default" type="submit" onclick="viewCart()">Back<i class="fa fa-shopping-cart"></i></button>
+            </div>
+          </div>
+          <!-- END CONTENT -->
+        </div>
+        </div>`
+        document.getElementById('main').innerHTML = str;
+        let user = JSON.parse(localStorage.getItem('USER'));
+        let tmp = `<tr>
+                        <th class="goods-page-description">Receipt ID</th>
+                        <th class="goods-page-ref-no">Status</th>
+                        <th class="goods-page-quantity">FullName</th>
+                        <th class="goods-page-price">Adrress</th>
+                        <th class="goods-page-total" colspan="2">Total</th>
+                    </tr>`;
+        $.ajax({
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem("TOKEN")
+            },
+            type: 'GET',
+            url: 'http://localhost:8080/receipts/find-all-by-user?userId=' + user.id,
+            success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    if(data[i].status==0){
+                        tmp += `<tr>
+                                <td class="goods-page-description">
+                                  <h3><a href="javascript:;">${data[i].id}</a></h3>
+                                </td>
+                                <td class="goods-page-ref-no">
+                                  Đơn hàng chưa được xác nhận
+                                </td>
+                                <td class="goods-page-price">
+                                  <strong>${data[i].fullname}</strong>
+                                </td>
+                                <td class="goods-page-price">
+                                  <strong>${data[i].address}</strong>
+                                </td>
+                                <td class="goods-page-total">
+                                  <strong>${data[i].priceTotal}</strong>
+                                </td>
+                                <td class="goods-page-description">
+                                  <h3><a onclick="showReceiptDetail(${data[i].id})">Xem chi tiết</></h3>
+                                </td>
+                              </tr>`
+                    }
+                    if(data[i].status==1){
+                        tmp += `<tr>
+                                <td class="goods-page-description">
+                                  <h3><a href="javascript:;">${data[i].id}</a></h3>
+                                </td>
+                                <td class="goods-page-ref-no">
+                                  Đơn hàng đã được xác nhận
+                                </td>
+                                <td class="goods-page-price">
+                                  <strong>${data[i].fullname}</strong>
+                                </td>
+                                <td class="goods-page-price">
+                                  <strong>${data[i].address}</strong>
+                                </td>
+                                <td class="goods-page-total">
+                                  <strong>${data[i].priceTotal}</strong>
+                                </td>
+                                <td class="goods-page-description">
+                                  <h3><a onclick="showReceiptDetail(${data[i].id})">Xem chi tiết</></h3>
+                                </td>
+                              </tr>`
+                    }
+                }
+                document.getElementById('receipt').innerHTML = tmp;
+            }
+        });
+    }
+
+    function showReceiptDetail(receiptId) {
+        let str = `<div class="container">
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        <div class="row margin-bottom-40">
+          <!-- BEGIN CONTENT -->
+          <div class="col-md-12 col-sm-12">
+            <h3>Receipt ID: ${receiptId}</h3>
+            <div class="goods-page">
+              <div class="goods-data clearfix">
+                <div class="table-wrapper-responsive">
+                <table summary="Shopping cart" id="receipt-detail">
+
+                </table>
+                </div>
+                <div class="shopping-total">
+                  <ul>
+                    <li class="shopping-total-price">
+                      <em>Total</em>
+                      <strong class="price" id="amount-price"></strong>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <button class="btn btn-default" type="submit" onclick="showCheckOutHistory()">Back<i class="fa fa-shopping-cart"></i></button>
+            </div>
+          </div>
+          <!-- END CONTENT -->
+        </div>
+        </div>`
+        document.getElementById('main').innerHTML = str;
+        let tmp = `<tr>
+                        <th class="goods-page-image">Image</th>
+                        <th class="goods-page-description">Description</th>
+                        <th class="goods-page-quantity">Quantity</th>
+                        <th class="goods-page-price">Unit price</th>
+                        <th class="goods-page-total" colspan="2">Total</th>
+                    </tr>`;
+        $.ajax({
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem("TOKEN")
+            },
+            type: 'GET',
+            url: 'http://localhost:8080/receipt-details/find-all-by-receipt?receiptId=' + receiptId,
+            success: function (data) {
+                let productPrice = 0;
+                let amountProductPrice = 0;
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].product.sale == 0) {
+                        productPrice = data[i].product.price;
+                        amountProductPrice = data[i].number * data[i].product.price;
+                    }
+                    if (data[i].product.sale != 0) {
+                        productPrice = (1 - data[i].product.sale) * data[i].product.price;
+                        amountProductPrice = data[i].number * (1 - data[i].product.sale) * data[i].product.price;
+                    }
+                    console.log(amountProductPrice)
+                    tmp += `<tr>
+                                <td class="goods-page-image">
+                                  <a href="javascript:;"><img src="${data[i].product.imageFirst}"></a>
+                                </td>
+                                <td class="goods-page-description">
+                                  <h3><a href="javascript:;">${data[i].product.title}</a></h3>
+                                  <em>${data[i].product.description}</em>
+                                </td>
+                                <td class="goods-page-quantity">
+                                  <div class="product-quantity">
+                                      <input id="product-quantity2" type="text" value="${data[i].number}" readonly class="form-control input-sm">
+                                  </div>
+                                </td>
+                                <td class="goods-page-price">
+                                  <strong><span>$</span>${productPrice}</strong>
+                                </td>
+                                <td class="goods-page-total">
+                                  <strong><span>$</span>${amountProductPrice}</strong>
+                                </td>
+                              </tr>`
+                }
+                document.getElementById('receipt-detail').innerHTML = tmp;
+                document.getElementById('amount-price').innerHTML = "$"+data[0].receipt.priceTotal;
+            }
+        });
     }
 </script>
 <!-- END BODY -->
